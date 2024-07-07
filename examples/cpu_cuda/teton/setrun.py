@@ -54,13 +54,13 @@ if output_style == 3:
 mx = 32
 my = 32
 
-mi = 5  # Number of x grids per block  <-- mx = mi*mx 
+mi = 4  # Number of x grids per block  <-- mx = mi*mx 
 mj = 2  # Number of y grids per block   <-- my = mj*my 
 
-minlevel = 1 
-maxlevel = 3 #resolution based on levels
+minlevel = 2 
+maxlevel = 5 #resolution based on levels
 
-regrid_interval = 16
+regrid_interval = 3
 
 #-------------------manning coefficient -----------------------------------------------
 manning_coefficient = 0.06

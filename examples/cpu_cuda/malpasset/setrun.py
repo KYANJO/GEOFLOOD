@@ -41,7 +41,7 @@ if output_style == 1:
     n_hours = 1.0              # Total number of hours in simulation     
     
 
-    frames_per_minute = 60/50   # (1 frame every 25 mins)
+    frames_per_minute = 1/60   # (1 frame every 25 mins)
 
 if output_style == 2:
     output_times = [1,2,3]    # Specify exact times to output files
@@ -57,8 +57,8 @@ my = 16
 mi = 2  # Number of x grids per block  <-- mx = mi*mx = 2*16 = 32
 mj = 5  # Number of y grids per block   <-- my = mj*my = 5*16 = 80
 
-minlevel = 1 
-maxlevel = 3 #resolution based on levels
+minlevel = 2 
+maxlevel = 5 #resolution based on levels
 
  
 #-------------------manning coefficient -----------------------------------------------
@@ -393,8 +393,8 @@ def setrun(claw_pkg='geoclaw'):
     geoflooddata. speed_tolerance_entries_c = 6
 
     geoflooddata.subcycle = True
-    geoflooddata.output = True
-    geoflooddata.output_gauges = True
+    geoflooddata.output = False
+    geoflooddata.output_gauges = False
 
 
     # Block dimensions for non-square domains
@@ -404,7 +404,7 @@ def setrun(claw_pkg='geoclaw'):
     # -----------------------------------------------
     # Tikz output parameters:
     # -----------------------------------------------
-    geoflooddata.tikz_out = True
+    geoflooddata.tikz_out = False
     geoflooddata.tikz_figsize = "2 4"
     geoflooddata.tikz_plot_prefix = "mlp"
     geoflooddata.tikz_plot_suffix = "png"

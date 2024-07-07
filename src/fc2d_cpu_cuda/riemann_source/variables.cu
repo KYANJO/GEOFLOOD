@@ -5,68 +5,6 @@
 #include <fc2d_cudaclaw_check.h>
 
 /* Declare constant memory variables */
-// __constant__ GeofloodVars d_geofloodVars;
-
-// void setprob_cuda(){
-//     int i = 0;
-//     char * line = NULL, *p = NULL, *eptr;
-//     size_t len = 0;
-//     ssize_t read;
-//     double arr[5];
-//     FILE *f = fopen("setprob.data","r");
-
-//     while ((read = getline(&line, &len, f)) != -1) 
-//     {
-//         p =strtok(line, " "); // get first word
-//         arr[i] = strtod(p,&eptr);  // convert to double
-//         i++; 
-//     }
-//     fclose(f);
-//     free(line);
-
-//     /* === Create and populate structures on the host === */
-//     GeofloodVars geofloodVars;
-//     geofloodVars.gravity = arr[0];
-//     geofloodVars.dry_tolerance = arr[1];
-//     geofloodVars.earth_radius = arr[2];
-//     geofloodVars.coordinate_system = (int) arr[3];
-//     geofloodVars.mcapa = (int) arr[4];
-
-    
-//     /* === Copy structures to device (constant memory) === */
-//     CHECK(cudaMemcpyToSymbol(d_geofloodVars, &geofloodVars, sizeof(GeofloodVars)));
-// }
-
-// __constant__ GeofloodVars d_geofloodVars;
-
-// void setprob_cuda() {
-//     double arr[5];
-//     FILE *f = fopen("setprob.data", "r");
-//     if (!f) {
-//         printf("setprob.data not provided");
-//         return;
-//     }
-
-//     char line[256]; // Assuming each line won't exceed 256 characters
-//     int i = 0;
-//     while (fgets(line, sizeof(line), f)) {
-//         arr[i++] = atof(line);
-//         if (i >= 5) break;
-//     }
-//     fclose(f);
-
-//     /* === Create and populate structures on the host === */
-//     GeofloodVars geofloodVars;
-//     geofloodVars.gravity = arr[0];
-//     geofloodVars.dry_tolerance = arr[1];
-//     geofloodVars.earth_radius = arr[2];
-//     geofloodVars.coordinate_system = (int)arr[3];
-//     geofloodVars.mcapa = (int)arr[4];
-
-//     /* === Copy structures to device (constant memory) === */
-//     CHECK(cudaMemcpyToSymbol(d_geofloodVars, &geofloodVars, sizeof(GeofloodVars)));
-// }
-
 __constant__ GeofloodVars d_geofloodVars;
 
 void setprob_cuda() {
@@ -107,7 +45,4 @@ void setprob_cuda() {
     /* === Copy structures to device (constant memory) === */
     CHECK(cudaMemcpyToSymbol(d_geofloodVars, &geofloodVars, sizeof(GeofloodVars)));
 
-    /* === clean up geoclaw memory === */
-    // cudaDeviceSynchronize();
-    // CLEANUP_GEOCLAW_PARAMETERS(manning_coeff_, manning_break_);
 }

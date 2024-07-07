@@ -1,5 +1,5 @@
 /* 
-@author: David L. George
+@author: David L. George (Fortran) and Brian Kyanjo (C and CUDA)
 @rewritten and accelerated to CUDA by: Brian Kyanjo
 @date: 31 July 2023
 @description: Solves normal Riemann problems for the 2D shallow water equations (swe) with 
@@ -127,7 +127,6 @@ __device__ void cuda_flood_rpn2(int idir, int meqn, int mwaves,
         if (hR <= drytol) {
             /* determine the wave structure */
             riemanntype(hL, hL, uL, -uL, &hstar, &s1m, &s2m, &rare1, &rare2, drytol);
-            // riemann_type(hL, hL, -uL, uL, hstar, s1m, s2m, rare1, rare2, drytol);
 
             hstartest = fmax(hL,hstar);
             if (hstartest + bL < bR) {
@@ -151,7 +150,7 @@ __device__ void cuda_flood_rpn2(int idir, int meqn, int mwaves,
         } else if (hL <= drytol) { /* right surface is lower than left topo */
             /* determine the Riemann structure */
             riemanntype(hR, hR, -uR, uR, &hstar, &s1m, &s2m, &rare1, &rare2, drytol);
-            // riemann_type(hR, hR, uR, -uR, hstar, s1m, s2m, rare1, rare2, drytol);
+           
             hstartest = fmax(hR,hstar);
 
             if (hstartest + bR < bL) //left state should become ghost values that mirror right for wall problem
@@ -219,7 +218,6 @@ __device__ void cuda_flood_rpn2(int idir, int meqn, int mwaves,
         // Compute dxdc based on idir without branching
         double idir_flag = (idir == 0);
         dxdc = earth_radius * deg2rad * (idir_flag + (1.0 - idir_flag) * cos(auxr[2]));
-        // dxdc = earth_radius * deg2rad * (idir == 0 ? 1.0 : cos(auxr[2]));
     
         // Update fwave and corresponding speeds
         for (int mw = 0; mw < mwaves; mw++) {
@@ -304,7 +302,6 @@ __device__ void cuda_flood_rpt2(int idir, int meqn, int mwaves, int maux,
     /* Compute velocities in relevant cell, and other quantities */
     
     // fluctuations being split is either left-going or right-going
-    // double imp_flag = (imp == 0);
     u = (imp_flag * ql[mu] + (1.0 - imp_flag) * qr[mu]) / h;
     v = (imp_flag * ql[mv] + (1.0 - imp_flag) * qr[mv]) / h;
 
@@ -437,7 +434,6 @@ __device__ void riemann_aug_JCP(int meqn, int mwaves, double hL,
 
     /* Determine the Riemann structure */
     riemanntype(hL,hR,uL,uR,&hm,&s1m,&s2m,&rare1,&rare2,drytol);
-    // riemann_type(hL,hR,uL,uR,hm,s1m,s2m,rare1,rare2, drytol);
 
     /* For the solver to handle depth negativity, depth dh is included in the decompostion which gives as acess to using the depth positive semidefinite solver (HLLE). This makes the system to have 3 waves instead of 2. where the 1st and 3rd are the eigenpairs are related to the flux Jacobian matrix of the original SWE (since s1<s2<s3, and have been modified by Einfeldt to handle depth non-negativity) and the 2nd is refered to as the the entropy corrector wave since its introduced to correct entropy violating solutions with only 2 waves. */
     

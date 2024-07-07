@@ -1,29 +1,8 @@
 /*
-  Copyright (c) 2018 Carsten Burstedde, Donna Calhoun, Melody Shih, Scott Aiton, 
-  Xinsheng Qin.
-  All rights reserved.
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are met:
-
-  * Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-  * Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    @authors:  Carsten Burstedde, Donna Calhoun, Melody Shih, Scott Aiton, Xinsheng Qin. 
+    @modified by: Brian KYANJO
+    @details: Patch based solver, updated with capacity function handling capabilities, adapted to flood modeling.
 */
-
 
 #include "../fc2d_geoclaw.h"
 #include "../fc2d_cudaclaw_cuda.h"
@@ -134,15 +113,6 @@ void cudaclaw_flux2_and_update(const int mx,   const int my,
             int I_q = I + mq*zs;
             qr[mq] = qold[I_q];  
         }         
-
-        // if (qr[0] < dry_tol)
-        // {
-        //     qr[0] = fmax(qr[0], 0.0);
-        //     qr[1] = 0.0;
-        //     qr[2] = 0.0;
-        // }
-
-        // b4step2(dry_tol, qr);
         
         qr[0] = fmax(qr[0], 0.0); // Ensure q[0] is not negative, applies unconditionally
 
@@ -1189,46 +1159,6 @@ FINAL_UPDATE: /* No transverse propagation; Update the solution and exit */
             }
         }
     }
-
-    // __syncthreads();
-
-    // if (src2 != NULL && src_term > 0)
-    // {
-    //     for(int thread_index = threadIdx.x; thread_index < mx*my; thread_index += blockDim.x)
-    //     {
-    //         // Loop over interior cells only
-    //         int ix = thread_index % mx;
-    //         int iy = thread_index/my;
-
-    //         int iadd = mbc;
-    //         int I = (iy + iadd)*ys + (ix + iadd);
-            
-    //         double *const qr = start;          /* meqn   */
-    //         for(int mq = 0; mq < meqn; mq++)
-    //         {
-    //             int I_q = I + mq*zs;
-    //             qr[mq] = qold[I_q];  
-    //         }
-    //         double *const auxr   = qr + meqn;         /* maux        */
-    //         // for(int m = 0; m < maux; m++)
-    //         // {
-    //         //     /* In case aux is already set */
-    //         //     int I_aux = I + m*zs;
-    //         //     auxr[m] = aux[I_aux];
-    //         // }    
-
-    //         // First cell in non-ghost cells should be (1,1)
-    //         int i = ix+1;  
-    //         int j = iy+1;
-    //         src2(meqn,maux,xlower,ylower,dx,dy,qr,auxr,t,dt,i,j);
-
-    //         for(int mq = 0; mq < meqn; mq++)
-    //         {
-    //             int I_q = I + mq*zs;
-    //             qold[I_q] = qr[mq];  
-    //         }
-    //     }
-    // }
 }
 
 /* ---------------------------------------------------------------------------------------

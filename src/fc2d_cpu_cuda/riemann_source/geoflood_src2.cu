@@ -2,7 +2,6 @@
     @author Brian Kyanjo briankyanjo@u.boisestate.edu
     @date 2024.03.07
     @brief src2 kernel function for GeoFlood
-
 */
 
 #include "../fc2d_cudaclaw_cuda.h"

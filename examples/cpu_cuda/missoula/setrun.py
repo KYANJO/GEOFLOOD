@@ -52,11 +52,11 @@ if output_style == 3:
 # mx = int(clawdata.upper[0] - clawdata.lower[0]) /grid_resolution
 # my = int(clawdata.upper[1] - clawdata.lower[1])/grid_resolution
 
-mx = 16*2 # Number of x grids per block
-my = 16*2 # Number of y grids per block
+mx = 32 # Number of x grids per block
+my = 32 # Number of y grids per block
 
-mi = 2 # Number of x grids per block  <-- mx = mi*mx 
-mj = 1  # Number of y grids per block   <-- my = mj*my 
+mi = 5 # Number of x grids per block  <-- mx = mi*mx 
+mj = 3  # Number of y grids per block   <-- my = mj*my 
 
 minlevel = 2 
 maxlevel = 5 #resolution based on levels
@@ -192,6 +192,14 @@ def setrun(claw_pkg='geoclaw'):
 
     dims_computed = np.array([clawdata.upper[0]-clawdata.lower[0], clawdata.upper[1]-clawdata.lower[1]])
     print("Computed aspect ratio    : {0:20.12f}".format(dims_computed[0]/dims_computed[1]))
+
+    print("")
+    print("Details in km : ")    
+
+    lon = np.array([clawdata.lower[0],clawdata.upper[0]])
+    lat = np.array([clawdata.lower[1],clawdata.upper[1]])
+    d = tools.compute_distances(lon,lat)
+
    
     # ---------------
     # Size of system:
@@ -383,7 +391,7 @@ def setrun(claw_pkg='geoclaw'):
 
     geoflooddata.refine_threshold = 0.01
     geoflooddata.coarsen_threshold = 0.005
-    geoflooddata.smooth_refine = True
+    geoflooddata.smooth_refine = False
     geoflooddata.regrid_interval = 16
     geoflooddata.advance_one_step = False
     geoflooddata.ghost_patch_pack_aux = True
@@ -391,8 +399,8 @@ def setrun(claw_pkg='geoclaw'):
     geoflooddata. speed_tolerance_entries_c = 6
 
     geoflooddata.subcycle = True
-    geoflooddata.output = True
-    geoflooddata.output_gauges = True
+    geoflooddata.output = False
+    geoflooddata.output_gauges = False
 
 
     # Block dimensions for non-square domains
@@ -402,7 +410,7 @@ def setrun(claw_pkg='geoclaw'):
      # -----------------------------------------------
     # Tikz output parameters:
     # -----------------------------------------------
-    geoflooddata.tikz_out = True
+    geoflooddata.tikz_out = False
     geoflooddata.tikz_figsize = "4 2"
     geoflooddata.tikz_plot_prefix = "missoula"
     geoflooddata.tikz_plot_suffix = "png"
@@ -460,7 +468,7 @@ def setrun(claw_pkg='geoclaw'):
     amrdata.flag_richardson = False    # use Richardson?
     amrdata.flag2refine = True
     amrdata.flag2refine_tol = 0.5
-    amrdata.regrid_interval = 16
+    amrdata.regrid_interval = 3
     amrdata.regrid_buffer_width  = 2
     amrdata.clustering_cutoff = 0.700000
     amrdata.verbosity_regrid = 0
