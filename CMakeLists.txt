@@ -2,7 +2,7 @@
 # @author:  Brian Kyanjo
 # @contact: briankyanjo@u.boisestate.edu
 # @date:    2022-10-16
-# @version: 1.4
+# @version: 1.6
 # 
 # List of available applications and examples
 #
